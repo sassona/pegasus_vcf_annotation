@@ -1,0 +1,33 @@
+The pegasus annotation pipeline should be kicked off from the folder where the vcfs sit.  Currently it does not take .gz files.  
+
+------------------
+v1 annotates with
+-snpEff 4.0
+-snpSift -> 1kG AF,AMR_AF,ASN_AF,AFR_AF,EUR_AF
+-snpSift -> EVS MAF
+-snpSift -> Msigdb
+-snpSift -> dbnsfp 2.7-> 
+SIFT_score,Polyphen2_HDIV_score,Polyphen2_HVAR_score,Uniprot_acc,Interpro_domain,SIFT_pred,Polyphen2_HDIV_pred,Polyphen2_HVAR_pred,LRT_pred,MutationAssessor_pred,GERP++_NR,GERP++_RS,phastCons100way_vertebrate,1000Gp1_AF,1000Gp1_AFR_AF,1000Gp1_EUR_AF,1000Gp1_AMR_AF,1000Gp1_ASN_AF,ESP6500_AA_AF,ESP6500_EA_AF
+-snpSift -> CHOP_AF from varify on 9/15/2014
+-Perl -> CADD
+-------------------
+
+The annotation files sit in 
+/nas/is1/reference/human/annotations/v1
+
+the pegasus files sit in
+/nas/is1/NGS_Diag/pegasus/source/config/annotate_v1
+
+the perl script to kick off the pegasus run sits
+/nas/is1/NGS_Diag/pegasus/source/mk_pegasus_workflow_annotation.pl
+———————————————————
+
+Here is how you run it
+1.  generate the list of vcfs you want annotated with the full path
+>ls $PWD/*.vcf > test.txt
+
+2.  run perl script which will generate a shell script with all the correct calls and paths for pegasus to run.
+>perl /nas/is1/NGS_Diag/pegasus/source/mk_pegasus_workflow_annotation.pl -i test.txt -r /nas/is1/NGS_Diag/pegasus/source
+
+3. submit to pegasus
+>sh test.sh
